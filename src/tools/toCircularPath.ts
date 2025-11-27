@@ -49,7 +49,7 @@ export const toCircularPath = (wave: Waveform, distance: number): WavePaths | nu
 
   const rawData: number[] = Array(wave.repeats).fill([...wave.waveData]).flat();
 
-  const precision = Math.floor(0.025 * rawData.reduce((p: number, value: number, index: number, all: number[]): number => {
+  const precision = Math.floor(0.1 * rawData.reduce((p: number, value: number, index: number, all: number[]): number => {
     if (index === 0) {
       return p;
     }
