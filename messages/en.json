@@ -1,0 +1,61 @@
+{
+  "MainMenu": {
+    "isolation": "Manage isolation machining parameters",
+    "drill": "Manage drill machining parameters",
+    "edgecut": "Manage edgecut machining parameters",
+    "settings": "Global settings"
+  },
+  "SettingsForm": {
+    "title": "Global settings",
+    "fields": {
+      "renderOnlyPaths": "Generate only gCode for paths",
+      "renderOnlyPathsHelper": "Leave out all additional instructions. (Only output G0 and G1 commands)",
+      "useSimpleFileInput": "Use simple file input field",
+      "useSimpleFileInputHelper": "Enable if you have problems using the “Watch files“ dialog"
+    }
+  },
+  "TaskListEntry": {
+    "typeIconLabel": {
+      "isolation": "Isolation",
+      "drill": "Drill",
+      "edgecut": "Edgecut",
+      "drawing": "Drawing/other"
+    }
+  },
+  "FileInput": {
+    "openFiles": "Open File(s)",
+    "watchFiles": "{activeHandles, plural, =0 {Watch file(s)} =1 {Watching 1 file} other {Watching # files}} "
+  },
+  "OperationForm": {
+    "title": "Edit machining operation parameters for {type} operation",
+    "abort": "Cancel",
+    "save": "Save",
+    "fields": {
+      "originOffsetX": "Origin X-Offset",
+      "originOffsetY": "Origin Y-Offset",
+      "safeHeight": "Safe height",
+      "clearanceHeight": "Clearance height",
+      "workHeight": "Work height",
+      "cutDepth": "Cut depth",
+      "stepDepth": "Step depth",
+      "feedRateXY": "Feedrate X/Y",
+      "plungeSpeed": "Plunge speed",
+      "spindleSpeed": "Spindle speed"
+    }
+  },
+  "TaskParamsForm": {
+    "title": "Edit parameters for “{fileName}”",
+    "abort": "Cancel",
+    "save": "Save"
+  },
+  "InputField": {
+    "buttonLabelIncrease": "Maximum: {value}",
+    "buttonLabelDecrease": "Minimum: {value}",
+    "units": {
+      "none": "",
+      "feedRate": "{globalUnits}/min",
+      "rpm": "rpm",
+      "dimension": "{globalUnits}"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.wave-preview {
+  &__svg {
+    width: auto;
+    height: 64px;
+    background: var(--color-white);
+  }
+
+  &__path {
+    stroke: var(--color-black);
+    stroke-width: 1px;
+    fill: none;
+  }
+}
