@@ -4,10 +4,10 @@ export default function Footer() {
     <footer className="layout__footer">
       <a
         className="layout__footer-link"
-        href="https://github.com/HerrZatacke/slitwarp"
+        href="https://github.com/HerrZatacke/svg-wave"
         target="_blank"
       >
-        {`slitwarp on GitHub (Version: ${release})`}
+        {`this app on GitHub (Version: ${release})`}
       </a>
     </footer>
   );
