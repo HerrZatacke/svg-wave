@@ -4,8 +4,11 @@ import useBoardStore from '@/stores/boardStore';
 import type { Waveform } from '@/stores/waveStore';
 import useWavesStore from '@/stores/waveStore';
 import { createBoard } from '@/tools/createBoard';
+import sortBy from '@/tools/sortBy';
 import { toCircularPath } from '@/tools/toCircularPath';
 import type { WavePaths } from '@/types/geometric';
+
+const sortByOffset = sortBy<Waveform>('offset');
 
 export const GetBoard: React.FC = () => {
 
@@ -18,7 +21,7 @@ export const GetBoard: React.FC = () => {
       variant="contained"
       size="large"
       onClick={() => {
-        const wavePaths = waves.reduce((acc: WavePaths[], waveForm: Waveform): WavePaths[] => {
+        const wavePaths = sortByOffset(waves).reduce((acc: WavePaths[], waveForm: Waveform): WavePaths[] => {
           const result = toCircularPath(waveForm, gapSize);
 
           if (!result) {
