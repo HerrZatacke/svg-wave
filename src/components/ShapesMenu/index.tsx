@@ -14,7 +14,7 @@ const buttons: AddButton[] = [
   { label: 'Add Saw', type: 'saw' },
   { label: 'Add Square', type: 'square' },
   { label: 'Add Triangle', type: 'triangle' },
-  // { label: 'Add Silence', type: 'silence' },
+  { label: 'Add Silence', type: 'silence' },
 ];
 
 export const ShapesMenu: React.FC = () => {
