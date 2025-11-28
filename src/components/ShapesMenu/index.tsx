@@ -34,6 +34,7 @@ export const ShapesMenu: React.FC = () => {
     <ButtonGroup
       size="large"
       variant="contained"
+      fullWidth
     >
       {
         buttons.map(({ label, type }) => (
