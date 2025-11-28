@@ -24,12 +24,12 @@ export const Shapes: React.FC = () => {
             <NumberField
               label="Repeats"
               value={repeats}
-              min={1}
+              min={2}
               max={80}
               step={1}
               onValueChange={(value) => {
                 updateWave(id, {
-                  repeats: value || 1,
+                  repeats: value || 2,
                 });
               }}
             />
