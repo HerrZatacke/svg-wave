@@ -3,25 +3,29 @@ import { boardDrill } from '@/tools/boardDrill';
 import { toBoardOutline } from '@/tools/toBoardOutline';
 import type { CopperPaths, Point, WavePaths } from '@/types/geometric';
 
+const point = (x: number, y: number): string => (
+  `(xy ${x.toFixed(6)} ${y.toFixed(6)})`
+);
+
 const board = (width: number, height: number, offsetX: number, offsetY: number) => {
   const outlinePoints = toBoardOutline(width, height);
 
   return (`
       (gr_poly
         (pts
-          ${outlinePoints.map(({ x, y }) => `          (xy ${x + offsetX} ${y + offsetY})`)
+          ${outlinePoints.map(({ x, y }) => `          ${point(x + offsetX, y + offsetY)}`)
       .join('\n')}
         ) (layer "Edge.Cuts") (width 0) (fill none))
 
       (dimension (type aligned) (layer "Dwgs.User")
-        (pts (xy ${(width / -2) + offsetX} ${(height / -2) + offsetY}) (xy ${(width / 2) + offsetX} ${(height / -2) + offsetY}))
+        (pts ${point((width / -2) + offsetX, (height / -2) + offsetY)} ${point((width / 2) + offsetX, (height / -2) + offsetY)})
         (height -15)
         (format (units 3) (units_format 1) (precision 4))
         (style (thickness 0.2) (arrow_length 1.27) (text_position_mode 0) (extension_height 0.58642) (extension_offset 0.5) keep_text_aligned)
       )
 
       (dimension (type aligned) (layer "Dwgs.User")
-        (pts (xy ${(width / -2) + offsetX} ${(height / -2) + offsetY}) (xy ${(width / -2) + offsetX} ${(height / 2) + offsetY}))
+        (pts ${point((width / -2) + offsetX, (height / -2) + offsetY)} ${point((width / -2) + offsetY, (height / 2) + offsetY)})
         (height 15)
         (format (units 3) (units_format 1) (precision 4))
         (style (thickness 0.2) (arrow_length 1.27) (text_position_mode 0) (extension_height 0.58642) (extension_offset 0.5) keep_text_aligned)
@@ -31,19 +35,27 @@ const board = (width: number, height: number, offsetX: number, offsetY: number) 
 };
 
 const boardShapes = (offsetX: number, offsetY: number) => ({ pointsInner, pointsOuter }: CopperPaths): string => {
-  const allPoints = [...pointsInner, ...pointsOuter];
   return `
-(zone (net 0) (net_name "") (layer "F.Cu") (hatch edge 0.508)
-      (connect_pads (clearance 0.1))
-      (min_thickness 0.254) (filled_areas_thickness no)
-      (fill yes (thermal_gap 0.1) (thermal_bridge_width 0.1))
-      (polygon
+(zone
+    (net 0)
+    (net_name "")
+    (layer "F.Cu")
+    (hatch edge 0.5)
+    (connect_pads (clearance 0.1))
+    (min_thickness 0.254)
+    (filled_areas_thickness no)
+    (fill yes (thermal_gap 0.1) (thermal_bridge_width 0.1))
+    (polygon
         (pts
-          ${allPoints.map(({ x, y }) => `        (xy ${x + offsetX} ${y + offsetY})`).join('\n')}
+            ${pointsOuter.map(({ x, y }) => `${point(x + offsetX, y + offsetY)}`).join(' ')}
         )
-      )
     )
-`;
+    (polygon
+        (pts
+            ${pointsInner.map(({ x, y }) => `${point(x + offsetX, y + offsetY)}`).join(' ')}
+        )
+    )
+)`;
 };
 
 export const createBoard = (
