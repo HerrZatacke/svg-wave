@@ -1,14 +1,27 @@
+import { Container, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
+
 export default function Footer() {
+  const t = useTranslations('Footer');
   const release = process.env.NEXT_PUBLIC_RELEASE_VERSION || 'none';
   return (
-    <footer className="layout__footer">
-      <a
-        className="layout__footer-link"
-        href="https://github.com/HerrZatacke/svg-wave"
-        target="_blank"
+    <Container
+      component="footer"
+      maxWidth="xl"
+      sx={{ py: 2 }}
+    >
+      <Typography
+        variant="caption"
+        component="div"
+        align="right"
       >
-        {`this app on GitHub (Version: ${release})`}
-      </a>
-    </footer>
+        <a
+          href="https://github.com/HerrZatacke/svg-wave"
+          target="_blank"
+        >
+          {t('linkText', { release })}
+        </a>
+      </Typography>
+    </Container>
   );
 }

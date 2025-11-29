@@ -1,9 +1,12 @@
-import { Button, Stack } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, Stack } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { WavePreview } from '@/components/WavePreview';
 import NumberField from '@/lib/NumberField';
 import useWavesStore from '@/stores/waveStore';
 
 export const Shapes: React.FC = () => {
+  const t = useTranslations('Shapes');
   const { waves, updateWave, deleteWave } = useWavesStore();
 
   return (
@@ -22,7 +25,7 @@ export const Shapes: React.FC = () => {
             <WavePreview waveData={waveData} />
 
             <NumberField
-              label="Repeats"
+              label={t('repeats')}
               value={repeats}
               min={2}
               max={80}
@@ -35,7 +38,7 @@ export const Shapes: React.FC = () => {
             />
 
             <NumberField
-              label="Offset"
+              label={t('offset')}
               value={offset}
               min={0}
               max={10000}
@@ -48,7 +51,7 @@ export const Shapes: React.FC = () => {
             />
 
             <NumberField
-              label="Scale"
+              label={t('scale')}
               value={scale}
               min={0}
               max={10000}
@@ -60,13 +63,13 @@ export const Shapes: React.FC = () => {
               }}
             />
 
-            <Button
+            <IconButton
               onClick={() => deleteWave(id)}
-              variant="contained"
-              size="medium"
+              size="large"
+              title={t('delete')}
             >
-              Delete
-            </Button>
+              <DeleteIcon />
+            </IconButton>
           </Stack>
         ))
       }

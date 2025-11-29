@@ -1,1 +1,38 @@
-{}
+{
+  "Home": {
+    "title": "Round Wave Thingy"
+  },
+  "ShapesMenu": {
+    "addSine": "Add Sine",
+    "addSaw": "Add Saw",
+    "addSquare":  "Add Square",
+    "addTriangle": "Add Triangle",
+    "addSilence":  "Add Silence",
+    "infoPopup": "Custom files for waveform must be a raw signed 8-bit"
+  },
+  "BoardDimensions": {
+    "width": "Width",
+    "height": "Height",
+    "gap": "Gap",
+    "holeToEdge": "Hole-to-edge",
+    "holeDiameter": "Hole ⌀",
+    "unitMM": "mm",
+    "unitMMPer100": "mm/100"
+  },
+  "BoardPreview": {
+    "title": "Board Preview"
+  },
+  "Footer": {
+    "linkText": "this app on GitHub (Version: {release})"
+  },
+  "GetBoard": {
+    "title": "Get Board!",
+    "longTitle": "Download a KiCad-compatible .kicad_pcb file"
+  },
+  "Shapes": {
+    "repeats": "Repeats",
+    "offset":"Offset",
+    "scale": "Scale",
+    "delete": "Delete"
+  }
+}

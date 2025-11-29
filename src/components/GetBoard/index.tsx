@@ -1,5 +1,7 @@
+import DownloadIcon from '@mui/icons-material/Download';
 import { Button } from '@mui/material';
 import { saveAs } from 'file-saver';
+import { useTranslations } from 'next-intl';
 import useBoardStore from '@/stores/boardStore';
 import type { Waveform } from '@/stores/waveStore';
 import useWavesStore from '@/stores/waveStore';
@@ -11,7 +13,7 @@ import type { WavePaths } from '@/types/geometric';
 const sortByOffset = sortBy<Waveform>('offset');
 
 export const GetBoard: React.FC = () => {
-
+  const t = useTranslations('GetBoard');
   const { waves } = useWavesStore();
   const { width, height, gap, holeDiameter, holeToEdge } = useBoardStore();
   const gapSize = gap / 200;
@@ -20,6 +22,8 @@ export const GetBoard: React.FC = () => {
     <Button
       variant="contained"
       size="large"
+      startIcon={<DownloadIcon />}
+      title={t('longTitle')}
       onClick={() => {
         const wavePaths = sortByOffset(waves).reduce((acc: WavePaths[], waveForm: Waveform): WavePaths[] => {
           const result = toCircularPath(waveForm, gapSize);
@@ -38,7 +42,7 @@ export const GetBoard: React.FC = () => {
         saveAs(new Blob([...createBoard(wavePaths, width, height, holeDiameter, holeToEdge)]), 'board.kicad_pcb');
       }}
     >
-      Get Board!
+      {t('title')}
     </Button>
   );
 };

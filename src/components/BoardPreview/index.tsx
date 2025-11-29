@@ -1,4 +1,6 @@
 import './index.scss';
+import { Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import useBoardStore from '@/stores/boardStore';
 import useWavesStore from '@/stores/waveStore';
@@ -7,7 +9,7 @@ import { toBoardOutline } from '@/tools/toBoardOutline';
 import { toCircularPath } from '@/tools/toCircularPath';
 
 export const BoardPreview: React.FC = () => {
-
+  const t = useTranslations('BoardPreview');
   const { waves } = useWavesStore();
   const { width, height, gap, holeDiameter, holeToEdge } = useBoardStore();
 
@@ -17,7 +19,14 @@ export const BoardPreview: React.FC = () => {
   const holes = boardDrill(width, height, holeDiameter, holeToEdge);
 
   return (
-    <div className="board-preview">
+    <Stack
+      className="board-preview"
+      direction="column"
+      gap={1}
+    >
+      <Typography variant="body2">
+        {t('title')}
+      </Typography>
       <TransformWrapper
         initialScale={1}
         minScale={1}
@@ -82,6 +91,6 @@ export const BoardPreview: React.FC = () => {
           </svg>
         </TransformComponent>
       </TransformWrapper>
-    </div>
+    </Stack>
   );
 };

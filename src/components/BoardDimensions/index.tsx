@@ -1,9 +1,10 @@
 import { Stack } from '@mui/material';
+import { useTranslations } from 'next-intl';
 import NumberField from '@/lib/NumberField';
 import useBoardStore from '@/stores/boardStore';
 
 export const BoardDimensions: React.FC = () => {
-
+  const t = useTranslations('BoardDimensions');
   const {
     width,
     height,
@@ -20,8 +21,8 @@ export const BoardDimensions: React.FC = () => {
   return (
     <Stack direction="column" gap={3}>
       <NumberField
-        label="Width"
-        unitLabel="mm"
+        label={t('width')}
+        unitLabel={t('unitMM')}
         value={width}
         min={10}
         max={200}
@@ -29,8 +30,8 @@ export const BoardDimensions: React.FC = () => {
         onValueChange={(value) => setWidth(value || 10)}
       />
       <NumberField
-        label="Height"
-        unitLabel="mm"
+        label={t('height')}
+        unitLabel={t('unitMM')}
         value={height}
         min={10}
         max={200}
@@ -38,8 +39,8 @@ export const BoardDimensions: React.FC = () => {
         onValueChange={(value) => setHeight(value || 10)}
       />
       <NumberField
-        label="Gap"
-        unitLabel="mm/100"
+        label={t('gap')}
+        unitLabel={t('unitMMPer100')}
         value={gap}
         min={0}
         max={500}
@@ -47,8 +48,8 @@ export const BoardDimensions: React.FC = () => {
         onValueChange={(value) => setGap(value || 0)}
       />
       <NumberField
-        label="Hole-to-edge"
-        unitLabel="mm"
+        label={t('holeToEdge')}
+        unitLabel={t('unitMM')}
         value={holeToEdge}
         min={0}
         max={60}
@@ -56,8 +57,8 @@ export const BoardDimensions: React.FC = () => {
         onValueChange={(value) => setHoleToEdge(value || 0)}
       />
       <NumberField
-        label="Hole ⌀"
-        unitLabel="mm"
+        label={t('holeDiameter')}
+        unitLabel={t('unitMM')}
         value={holeDiameter}
         min={0}
         max={15}
