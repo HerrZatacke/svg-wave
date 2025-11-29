@@ -17,11 +17,11 @@ export interface BoardStoreState {
 const useBoardStore = create(
   persist<BoardStoreState>(
     (set) => ({
-      width: 100,
-      height: 100,
-      holeToEdge: 10,
+      width: 70,
+      height: 70,
+      holeToEdge: 7,
       holeDiameter: 4,
-      gap: 30,
+      gap: 20,
       setWidth: (width: number) => {
         set({ width });
       },
