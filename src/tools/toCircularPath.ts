@@ -49,8 +49,6 @@ export const toCircularPath = (wave: Waveform, distance: number): WavePaths | nu
 
   const rawData: number[] = Array(wave.repeats).fill([...wave.waveData]).flat();
 
-  const precision = Math.max(300, Math.min(1200, rawData.length * 2));
-
   const points = rawData.reduce((acc: Point[], value: number, index: number): Point[] => {
     const waveFormCoords = distanceToCoords(wave, value, index, rawData.length);
 
@@ -70,6 +68,8 @@ export const toCircularPath = (wave: Waveform, distance: number): WavePaths | nu
   document.body.appendChild(svg);
 
   const lineLength = polyline.getTotalLength();
+  const precision = Math.round(polyline.getTotalLength() * 4);
+
   const interlacedPoints: Point[] = Array(precision).fill('').map((_, index) => {
     const lineOffset = lineLength / precision * index;
     return polyline.getPointAtLength(lineOffset);
