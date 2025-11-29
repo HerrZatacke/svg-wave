@@ -9,10 +9,7 @@ const board = (width: number, height: number, offsetX: number, offsetY: number) 
   return (`
       (gr_poly
         (pts
-          ${outlinePoints.map(({
-      x,
-      y,
-    }) => `          (xy ${x + offsetX} ${y + offsetY})`)
+          ${outlinePoints.map(({ x, y }) => `          (xy ${x + offsetX} ${y + offsetY})`)
       .join('\n')}
         ) (layer "Edge.Cuts") (width 0) (fill none))
 
@@ -42,11 +39,7 @@ const boardShapes = (offsetX: number, offsetY: number) => ({ pointsInner, points
       (fill yes (thermal_gap 0.1) (thermal_bridge_width 0.1))
       (polygon
         (pts
-          ${allPoints.map(({
-    x,
-    y,
-  }) => `        (xy ${x + offsetX} ${y + offsetY})`)
-    .join('\n')}
+          ${allPoints.map(({ x, y }) => `        (xy ${x + offsetX} ${y + offsetY})`).join('\n')}
         )
       )
     )
