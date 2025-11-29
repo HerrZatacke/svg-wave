@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 
 export default function Footer() {
   const t = useTranslations('Footer');
-  const release = process.env.NEXT_PUBLIC_RELEASE_VERSION || 'none';
+  const release = process.env.NEXT_PUBLIC_RELEASE_VERSION || 'local-dev';
   return (
     <Container
       component="footer"

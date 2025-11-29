@@ -41,7 +41,6 @@ jobs:
         if: steps.checkTag.outputs.exists == 'false'
         env:
           NEXT_PUBLIC_BASE_PATH: /svg-wave
-          NEXT_PUBLIC_SVG_SCALE: 1000
         run: |
           npm run build
           touch out/.nojekyll
