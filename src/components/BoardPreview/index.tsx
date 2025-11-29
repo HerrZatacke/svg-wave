@@ -5,15 +5,21 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import useBoardStore from '@/stores/boardStore';
 import useWavesStore from '@/stores/waveStore';
 import { boardDrill } from '@/tools/boardDrill';
+import { pointsToPath } from '@/tools/pointsToPath.ts';
 import { toBoardOutline } from '@/tools/toBoardOutline';
 import { toCircularPath } from '@/tools/toCircularPath';
+
+const strokeColors = {
+  board: '#229922',
+  inner: '#005555',
+  outer: '#550055',
+};
 
 export const BoardPreview: React.FC = () => {
   const t = useTranslations('BoardPreview');
   const { waves } = useWavesStore();
   const { width, height, gap, holeDiameter, holeToEdge } = useBoardStore();
 
-  const paths = true;
   const gapSize = gap / 200;
 
   const holes = boardDrill(width, height, holeDiameter, holeToEdge);
@@ -41,49 +47,46 @@ export const BoardPreview: React.FC = () => {
             xmlns="http://www.w3.org/2000/svg"
             viewBox={`${Math.floor(width * -0.55)} ${Math.floor(height * -0.55)} ${Math.ceil(width * 1.1)} ${Math.ceil(height * 1.1)}`}
           >
-            <polyline
-              className="board-preview__path board-preview__path--board"
-              points={toBoardOutline(width, height).map(({ x, y }) => `${x.toFixed(3)},${y.toFixed(3)}`).join(' ')}
-            />
-            {
-              holes.map(({ x, y, radius }, index) => (
-                <circle
-                  className="board-preview__circle"
-                  key={index}
-                  cx={x}
-                  cy={y}
-                  r={radius}
-                />
-              ))
-            }
+            <g
+              fill="none"
+              strokeWidth="0.125px"
+              stroke={strokeColors.board}
+            >
+              <polyline
+                points={toBoardOutline(width, height).map(({ x, y }) => `${x.toFixed(3)},${y.toFixed(3)}`).join(' ')}
+              />
+              {
+                holes.map(({ x, y, radius }, index) => (
+                  <circle
+                    key={index}
+                    cx={x}
+                    cy={y}
+                    r={radius}
+                  />
+                ))
+              }
+            </g>
             {
               waves.map((wave) => {
                 const wavePaths = toCircularPath(wave, gapSize);
 
                 return wavePaths ? (
-                  <g key={wave.id} id={wave.id}>
-                    { paths ? (
-                      <>
-                        <polyline
-                          className="board-preview__path board-preview__path--inner"
-                          points={(wavePaths.pointsInner || []).map(({ x, y }) => `${x.toFixed(3)},${y.toFixed(3)}`).join(' ')}
-                        />
-                        <polyline
-                          className="board-preview__path board-preview__path--outer"
-                          points={(wavePaths.pointsOuter || []).map(({ x, y }) => `${x.toFixed(3)},${y.toFixed(3)}`).join(' ')}
-                        />
-                      </>
-                    ) : (
-                      wavePaths.points.map(({ x, y }, index) => (
-                        <circle
-                          // className="board-preview__path board-preview__circle"
-                          key={index}
-                          cx={x.toFixed(3)}
-                          cy={y.toFixed(3)}
-                          r="0.5"
-                        />
-                      ))
-                    )}
+                  <g
+                    key={wave.id}
+                    id={wave.id}
+                    fill="none"
+                    strokeWidth="0.125px"
+                  >
+                    <path
+                      className="board-preview__path board-preview__path--inner"
+                      d={pointsToPath(wavePaths.pointsInner || [])}
+                      stroke={strokeColors.inner}
+                    />
+                    <path
+                      className="board-preview__path board-preview__path--outer"
+                      d={pointsToPath(wavePaths.pointsOuter || [])}
+                      stroke={strokeColors.outer}
+                    />
                   </g>
                 ) : null;
               })

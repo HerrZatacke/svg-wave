@@ -4,28 +4,4 @@
     height: 100%;
     background: var(--color-white);
   }
-
-  &__path {
-    fill: none;
-    stroke-width: 0.125px;
-
-    &--board {
-      stroke: var(--color-waveform-board);
-    }
-
-    &--inner {
-      stroke: var(--color-waveform-inner);
-    }
-
-    &--outer {
-      stroke: var(--color-waveform-outer);
-    }
-
-  }
-
-  &__circle {
-    stroke-width: 0.125px;
-    stroke: var(--color-waveform-board);
-    fill: none;
-  }
 }
