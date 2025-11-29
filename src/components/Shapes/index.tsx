@@ -28,7 +28,7 @@ export const Shapes: React.FC = () => {
               label={t('repeats')}
               value={repeats}
               min={2}
-              max={80}
+              max={256}
               step={1}
               onValueChange={(value) => {
                 updateWave(id, {

@@ -1,6 +1,7 @@
+import ClipperLib, { type IntPoint } from 'clipper-lib';
 import type { Waveform } from '@/stores/waveStore';
 import { closePath } from '@/tools/closePath';
-import type { Line, Point, WavePaths } from '@/types/geometric';
+import type { Point, WavePaths } from '@/types/geometric';
 
 const distanceToCoords = (wave: Waveform, value: number, index: number, steps: number) => {
   const distance = (wave.offset / 100) + (value * wave.scale / 10000);
@@ -13,29 +14,17 @@ const distanceToCoords = (wave: Waveform, value: number, index: number, steps: n
   return { x, y };
 };
 
-const perpendicularDistancePoint = ([{ x: x1, y: y1 }, { x: x2, y: y2 }]: Line, distance: number): Point => {
-  if (x2 === x1) {
-    return {
-      x: x1 + distance,
-      y: (y1 + y2) / 2,
-    };
-  }
+const clipperScale = 1000;
 
-  const center: Point = {
-    x: (x1 + x2) / 2,
-    y: (y1 + y2) / 2,
-  };
+const scaleUp = (p: Point): IntPoint => ({
+  X: p.x * clipperScale,
+  Y: p.y * clipperScale,
+});
 
-  const slope = (y2 - y1) / (x2 - x1);
-  const angle = Math.atan(slope) + (Math.PI / 2 * Math.sign(x2 - x1));
-
-  const final: Point = {
-    x: center.x + (distance * Math.cos(angle)),
-    y: center.y + (distance * Math.sin(angle)),
-  };
-
-  return final;
-};
+const scaleDown = (p: IntPoint): Point => ({
+  x: p.X / clipperScale,
+  y: p.Y / clipperScale,
+});
 
 export const toCircularPath = (wave: Waveform, distance: number): WavePaths | null => {
   if (
@@ -58,68 +47,36 @@ export const toCircularPath = (wave: Waveform, distance: number): WavePaths | nu
     ];
   }, []);
 
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '-44 -44 88 88');
-  const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-  polyline.setAttribute('points', closePath(points).map(({ x, y }) => `${x},${y}`).join(' '));
-  polyline.setAttribute('stroke', '#fff');
-  polyline.setAttribute('stroke-width', '1px');
-  svg.appendChild(polyline);
-  document.body.appendChild(svg);
 
-  const lineLength = polyline.getTotalLength();
-  const precision = Math.round(polyline.getTotalLength() * 4);
+  const scaledPath = points.map(scaleUp);
 
-  const interlacedPoints: Point[] = Array(precision).fill('').map((_, index) => {
-    const lineOffset = lineLength / precision * index;
-    return polyline.getPointAtLength(lineOffset);
-  });
+  const clipperOffset = new ClipperLib.ClipperOffset();
 
-  document.body.removeChild(svg);
+  clipperOffset.AddPath(
+    scaledPath,
+    ClipperLib.JoinType.jtRound,
+    ClipperLib.EndType.etClosedPolygon,
+  );
 
-  const pointsInner = interlacedPoints.reduce((
-    acc: Point[],
-    point: Point,
-    index: number,
-    collection: Point[],
-  ): Point[] => {
-    if (index === 0) {
-      return acc;
-    }
+  const resultOuter: { X: number; Y: number }[][] = [];
+  const resultInner: { X: number; Y: number }[][] = [];
+  clipperOffset.Execute(resultOuter, distance * clipperScale);
+  clipperOffset.Execute(resultInner, distance * -clipperScale);
 
-    const prevPoint = collection[index - 1];
-    const line: Line = [prevPoint, point];
+  if (resultOuter.length === 1 && resultInner.length === 1) {
+    const pointsOuter = resultOuter[0].reverse().map(scaleDown);
+    const pointsInner = resultInner[0].map(scaleDown);
 
-    return [
-      ...acc,
-      perpendicularDistancePoint(line, distance),
-    ];
-  }, []);
-
-  const pointsOuter = interlacedPoints.reduce((
-    acc: Point[],
-    point: Point,
-    index: number,
-    collection: Point[],
-  ): Point[] => {
-    if (index === 0) {
-      return acc;
-    }
-
-    const prevPoint = collection[index - 1];
-    const line: Line = [prevPoint, point];
-
-    return [
-      ...acc,
-      perpendicularDistancePoint(line, -distance),
-    ];
-  }, []);
-
-  // console.log({ points, pointsInner });
+    return {
+      points,
+      pointsInner: closePath(pointsInner),
+      pointsOuter: closePath(pointsOuter),
+    };
+  }
 
   return {
-    points: closePath(points),
-    pointsInner: closePath(pointsInner),
-    pointsOuter: closePath(pointsOuter).reverse(),
+    points,
+    pointsInner: [],
+    pointsOuter: [],
   };
 };
