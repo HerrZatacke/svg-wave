@@ -26,8 +26,10 @@
     "linkText": "this app on GitHub (Version: {release})"
   },
   "GetBoard": {
-    "title": "Get Board!",
-    "longTitle": "Download a KiCad-compatible .kicad_pcb file"
+    "boardTitle": "Get Board!",
+    "longBoardTitle": "Download a KiCad-compatible .kicad_pcb file",
+    "svgTitle": "Download SVG",
+    "longSVGTitle": "Download Board Preview as SVG"
   },
   "Shapes": {
     "repeats": "Repeats",

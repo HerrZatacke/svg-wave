@@ -1,48 +1,32 @@
 import DownloadIcon from '@mui/icons-material/Download';
-import { Button } from '@mui/material';
-import { saveAs } from 'file-saver';
+import { Button, ButtonGroup } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import useBoardStore from '@/stores/boardStore';
-import type { Waveform } from '@/stores/waveStore';
-import useWavesStore from '@/stores/waveStore';
-import { createBoard } from '@/tools/createBoard';
-import sortBy from '@/tools/sortBy';
-import { toCircularPath } from '@/tools/toCircularPath';
-import type { WavePaths } from '@/types/geometric';
-
-const sortByOffset = sortBy<Waveform>('offset');
+import { useDownload } from '@/hooks/useDownload.ts';
 
 export const GetBoard: React.FC = () => {
   const t = useTranslations('GetBoard');
-  const { waves } = useWavesStore();
-  const { width, height, gap, holeDiameter, holeToEdge } = useBoardStore();
-  const gapSize = gap / 200;
+  const { downloadBoard, downloadSVG } = useDownload();
 
   return (
-    <Button
+    <ButtonGroup
       variant="contained"
       size="large"
-      startIcon={<DownloadIcon />}
-      title={t('longTitle')}
-      onClick={() => {
-        const wavePaths = sortByOffset(waves).reduce((acc: WavePaths[], waveForm: Waveform): WavePaths[] => {
-          const result = toCircularPath(waveForm, gapSize);
-
-          if (!result) {
-            return acc;
-          }
-
-          return [...acc, result];
-        }, []);
-
-        if (!wavePaths.length) {
-          return;
-        }
-
-        saveAs(new Blob([...createBoard(wavePaths, width, height, holeDiameter, holeToEdge)]), 'board.kicad_pcb');
-      }}
+      fullWidth
     >
-      {t('title')}
-    </Button>
+      <Button
+        startIcon={<DownloadIcon />}
+        title={t('longBoardTitle')}
+        onClick={downloadBoard}
+      >
+        {t('boardTitle')}
+      </Button>
+      <Button
+        startIcon={<DownloadIcon />}
+        title={t('longSVGTitle')}
+        onClick={downloadSVG}
+      >
+        {t('svgTitle')}
+      </Button>
+    </ButtonGroup>
   );
 };
