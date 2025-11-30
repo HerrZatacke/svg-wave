@@ -47,6 +47,8 @@ export const toCircularPath = (wave: Waveform, distance: number): WavePaths | nu
     ];
   }, []);
 
+  const radiusInner = (wave.offset / 100) + (0x00 * wave.scale / 10000);
+  const radiusOuter = (wave.offset / 100) + (0xff * wave.scale / 10000);
 
   const scaledPath = points.map(scaleUp);
 
@@ -71,6 +73,8 @@ export const toCircularPath = (wave: Waveform, distance: number): WavePaths | nu
       points,
       pointsInner: closePath(pointsInner),
       pointsOuter: closePath(pointsOuter),
+      radiusInner,
+      radiusOuter,
     };
   }
 
@@ -78,5 +82,7 @@ export const toCircularPath = (wave: Waveform, distance: number): WavePaths | nu
     points,
     pointsInner: [],
     pointsOuter: [],
+    radiusInner: 0,
+    radiusOuter: 0,
   };
 };

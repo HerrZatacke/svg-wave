@@ -55,7 +55,34 @@ const boardShapes = (offsetX: number, offsetY: number) => ({ pointsInner, points
             ${pointsInner.map(({ x, y }) => `${point(x + offsetX, y + offsetY)}`).join(' ')}
         )
     )
-)`;
+)
+`;
+};
+
+const boardMarkings = (offsetX: number, offsetY: number) => ({ radiusInner, radiusOuter }: WavePaths): string => {
+  return `
+    (gr_circle
+        (center ${offsetX} ${offsetY})
+        (end ${offsetX} ${radiusInner + offsetY})
+        (stroke
+            (width 0.05)
+            (type dash)
+        )
+        (fill no)
+        (layer "F.SilkS")
+    )
+
+    (gr_circle
+        (center ${offsetX} ${offsetY})
+        (end ${offsetX} ${radiusOuter + offsetY})
+        (stroke
+            (width 0.05)
+            (type dash)
+        )
+        (fill no)
+        (layer "F.SilkS")
+    )
+`;
 };
 
 export const createBoard = (
@@ -120,6 +147,8 @@ export const createBoard = (
       .join('\n')}
 
     ${combinedPoints.map(boardShapes(offsetX, offsetY)).join('\n\n')}
+
+    ${wavePathss.map(boardMarkings(offsetX, offsetY)).join('\n\n')}
 
 )
 `

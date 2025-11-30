@@ -9,6 +9,8 @@ export interface WavePaths {
   points: Point[];
   pointsInner: Point[];
   pointsOuter: Point[];
+  radiusInner: number;
+  radiusOuter: number;
 }
 
 export interface CopperPaths {

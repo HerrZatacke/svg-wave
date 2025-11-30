@@ -13,6 +13,7 @@ const strokeColors = {
   board: '#229922',
   inner: '#005555',
   outer: '#550055',
+  bounds: '#dddddd',
 };
 
 export const BoardPreview: React.FC = () => {
@@ -86,6 +87,20 @@ export const BoardPreview: React.FC = () => {
                       className="board-preview__path board-preview__path--outer"
                       d={pointsToPath(wavePaths.pointsOuter || [])}
                       stroke={strokeColors.outer}
+                    />
+                    <circle
+                      cx={0}
+                      cy={0}
+                      r={wavePaths.radiusInner}
+                      stroke={strokeColors.bounds}
+                      strokeDasharray="0.7,0.3"
+                    />
+                    <circle
+                      cx={0}
+                      cy={0}
+                      r={wavePaths.radiusOuter}
+                      stroke={strokeColors.bounds}
+                      strokeDasharray="0.7,0.3"
                     />
                   </g>
                 ) : null;
